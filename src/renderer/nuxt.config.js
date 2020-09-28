@@ -1,4 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
+const isProduction = process.env.NODE_ENV === 'production'
+const isDev = process.env.NODE_ENV === 'development'
 
 export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
@@ -60,6 +62,24 @@ export default {
     },
   },
 
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  dev: isDev,
+  router: {
+    mode: 'hash',
+  },
+  build: {
+    extend(config) {
+      if (!isDev) {
+        // absolute path to files on production (default value: '/_nuxt/')
+        config.output.publicPath = '_nuxt/'
+      }
+      config.node = {
+        __dirname: !isProduction,
+        __filename: !isProduction,
+      }
+    },
+  },
+  generate: {
+    dir: '../../dist/nuxt-build',
+  },
+  telemetry: false,
 }
