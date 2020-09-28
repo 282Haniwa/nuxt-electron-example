@@ -2,13 +2,27 @@
   "name": "nuxt-electron-example",
   "version": "1.0.0",
   "private": true,
+  "main": "dist/main/index.js",
   "scripts": {
-    "dev:renderer": "nuxt-ts src/renderer",
-    "build:renderer": "nuxt-ts generate src/renderer",
+    "dev": "npm-run-all -p dev:main dev:electron",
+    "dev:main": "cross-env NODE_ENV=development tsc -p src/main/tsconfig.json",
+    "dev:electron": "cross-env NODE_ENV=development electron .",
+    "dev:renderer": "cross-env NODE_ENV=development nuxt-ts src/renderer",
+    "build": "npm-run-all build:main build:renderer build:electron -- {@}",
+    "build:main": "cross-env NODE_ENV=production tsc -p src/main/tsconfig.json",
+    "build:renderer": "cross-env NODE_ENV=production nuxt-ts generate src/renderer",
+    "build:electron": "cross-env NODE_ENV=production electron-builder",
+    "build:all": "npm-run-all build -- -mwl",
+    "build:win": "npm-run-all build -- --win",
+    "build:mac": "npm-run-all build -- --mac",
+    "build:linux": "npm-run-all build -- --linux",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
-    "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "lint": "npm-run-all lint:js lint:style",
+    "test": "jest",
+    "clean": "npm-run-all clean:build clean:dist",
+    "clean:build": "rimraf build/*",
+    "clean:dist": "rimraf dist/*"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
@@ -22,7 +36,8 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.5"
+    "nuxt": "^2.14.5",
+    "vuetify": "^2.3.10"
   },
   "devDependencies": {
     "@nuxt/types": "^2.14.5",
@@ -47,7 +62,9 @@
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "lint-staged": "^10.3.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.1.1",
+    "rimraf": "^3.0.2",
     "stylelint": "^13.7.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
