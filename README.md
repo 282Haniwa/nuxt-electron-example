@@ -6,15 +6,13 @@
 # install dependencies
 $ yarn install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload
 $ yarn dev
 
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+# build for production
+$ yarn build # for building environment
+$ yarn build:all
+$ yarn build:win
+$ yarn build:mac
+$ yarn build:linux
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
